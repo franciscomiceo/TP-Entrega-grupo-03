@@ -1,0 +1,5 @@
+package frsf.isi.died.app.controller;
+
+public enum TiposAcciones {
+	ABM_LIBROS,ABM_VIDEOS,MODIFICAR_LIBRO,MODIFICAR_VIDEO,ELIMINAR_LIBRO,ELIMINAR_VIDEO,VER_GRAFO, BUSQUEDA
+}
