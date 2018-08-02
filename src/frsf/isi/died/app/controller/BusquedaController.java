@@ -33,7 +33,8 @@ public class BusquedaController {
 		this.panelBusqueda.setController(this);
 		
 		Comparator<MaterialCapacitacion> comparador=(MaterialCapacitacion mc1,MaterialCapacitacion mc2)->{
-			int ret=0; //mc1.getRelevancia().compareTo(mc2.getRelevancia()); 
+			int ret=0; 
+			ret=mc1.getRelevancia().compareTo(mc2.getRelevancia()); 
 			if(ret==0)
 				{
 					ret=mc2.getCalificacion().compareTo(mc1.getCalificacion());
