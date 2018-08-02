@@ -54,7 +54,7 @@ public class Principal extends JFrame {
 	        menuItem.addActionListener(e -> controller.showView(TiposAcciones.VER_GRAFO));
 	        menu.add(menuItem);
 	        
-	        menuItem = new JMenuItem("Busquedas");
+	        menuItem = new JMenuItem("Busquedas / WishList / Contenido");
 	        menuItem.addActionListener(e -> controller.showView(TiposAcciones.BUSQUEDA));
 	        menu.add(menuItem);
 	        menuBar.add(menu);

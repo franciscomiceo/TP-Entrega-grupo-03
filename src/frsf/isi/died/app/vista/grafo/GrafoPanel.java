@@ -65,9 +65,17 @@ public class GrafoPanel extends JPanel {
                     event.consume();
                     if(controller.listaVertices().size()>0)
                     {
-                    Object[] mats = controller.listaVertices().toArray();
-                    //String text = JOptionPane.showInputDialog(, "ID del nodo");
-                    Object verticeMatSeleccionado= (MaterialCapacitacion) JOptionPane.showInputDialog(framePadre, 
+                    	if(controller.listaVertices().size()>vertices.size()) //verifico si quedan o no materiales por cargar en el grafo
+                    	{
+                    		//sólo muestro los materiales que no se han agregado aún al grafo
+                    		List<MaterialCapacitacion> lista=controller.listaVertices().stream().filter(v-> 
+                    		{for(VerticeView vv: vertices)
+                    			if(vv.getNombre().compareTo(v.getTitulo())==0) return false;
+                    		return true;})
+                    		.collect(Collectors.toList());
+                    		Object[] mats = lista.toArray();
+                    		//String text = JOptionPane.showInputDialog(, "ID del nodo");
+                    		Object verticeMatSeleccionado= (MaterialCapacitacion) JOptionPane.showInputDialog(framePadre, 
                             "Que material corresponde con el vertice?",
                             "Agregar Vertice",
                             JOptionPane.QUESTION_MESSAGE, 
@@ -75,15 +83,16 @@ public class GrafoPanel extends JPanel {
                             mats, 
                             mats[0]);
 
-                    if (verticeMatSeleccionado != null) {
-                        // quito un color de la cola
-                        Color aux = colaColores.remove();
-                        try {
-                        controller.crearVertice(event.getX(), event.getY(), aux,(MaterialCapacitacion) verticeMatSeleccionado);
-                        }catch(Exception ex) {JOptionPane.showMessageDialog(null,ex.getMessage());}
-                        // pongo el color al final de la cola
-                        colaColores.add(aux);
-                    }
+                    		if (verticeMatSeleccionado != null) {
+                    			// quito un color de la cola
+                    			Color aux = colaColores.remove();
+                    			try {
+                    				controller.crearVertice(event.getX(), event.getY(), aux,(MaterialCapacitacion) verticeMatSeleccionado);
+                    			}catch(Exception ex) {JOptionPane.showMessageDialog(null,ex.getMessage());}
+                    			// pongo el color al final de la cola
+                    			colaColores.add(aux);
+                    		}
+                    	} else JOptionPane.showMessageDialog(null,"Ya se han cargado todos los materiales en el grafo");
                     }
                     else JOptionPane.showMessageDialog(null,"Debe cargar al menos 2 materiales");
                 }
@@ -315,7 +324,7 @@ public class GrafoPanel extends JPanel {
 		List<VerticeView> verticesTema=new ArrayList<>(); //considero sólo los vértices con dicho "TEMA"
 		for(VerticeView vv: vertices)
 		{
-			System.out.println(vv.getTema());
+			//System.out.println(vv.getTema());
 			if(vv.getTema().compareTo(tema)==0)
 				verticesTema.add(vv);
 		}

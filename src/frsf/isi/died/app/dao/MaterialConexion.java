@@ -304,6 +304,12 @@ public static void modificarLibro(Libro l) throws Exception{
 	                +"', precio_compra='"+l.getPrecioCompra()+"', paginas='"+l.getPaginas()+"', calificacion='"+l.getCalificacion()
 	                +"' WHERE id_material='"+l.getId()+"'");
 	            sql.executeUpdate();
+	            
+	            //para modificar titulo también en el grafo
+	            sql = con.prepareStatement(
+		                "UPDATE died.vertice "
+		                		+ "SET nombre='"+l.getTitulo()+"' WHERE id_material='"+l.getId()+"'");
+	            sql.executeUpdate();
 	            sql.close();
 	            con.close();
 	        } catch (SQLException ex) {throw new Exception("No se pudo modificar el Libro");}
@@ -321,6 +327,12 @@ public static void modificarVideo(Video v) throws Exception{
                 + "SET titulo='"+v.getTitulo()+"', costo='"+v.getCosto()+"', fecha_publicacion='"+fmt.format(v.getFecha_publicacion())
                 +"', duracion='"+v.getDuracionEnSegundos()+"', calificacion='"+v.getCalificacion()
                 +"' WHERE id_material='"+v.getId()+"'");
+            sql.executeUpdate();
+            
+          //para modificar titulo también en el grafo
+            sql = con.prepareStatement(
+	                "UPDATE died.vertice "
+	                		+ "SET nombre='"+v.getTitulo()+"' WHERE id_material='"+v.getId()+"'");
             sql.executeUpdate();
             sql.close();
             con.close();
