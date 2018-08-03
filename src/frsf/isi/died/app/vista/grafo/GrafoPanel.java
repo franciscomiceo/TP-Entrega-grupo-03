@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import frsf.isi.died.app.controller.GrafoController;
+import frsf.isi.died.app.dao.MaterialConexion;
 import frsf.isi.died.tp.estructuras.Arista;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 
@@ -111,7 +112,7 @@ public class GrafoPanel extends JPanel {
                 		if (auxiliar!=null && vDestino != null) 
                 		{
                 			auxiliar.setDestino(vDestino);
-                			System.out.println("Vertice destino: "+vDestino.toString());
+                			//System.out.println("Vertice destino: "+vDestino.toString());
                 			controller.crearArista(auxiliar);
                 		}
                 		auxiliar=null;
@@ -131,7 +132,7 @@ public class GrafoPanel extends JPanel {
                 if (auxiliar==null && vOrigen != null) {
                     auxiliar = new AristaView();                    
                     auxiliar.setOrigen(vOrigen);
-                    System.out.println("Vertice origen: "+vOrigen.toString());
+                    //System.out.println("Vertice origen: "+vOrigen.toString());
                 }
             	}catch(Exception ex) {JOptionPane.showMessageDialog(null,ex.getMessage());}
             }
@@ -141,10 +142,11 @@ public class GrafoPanel extends JPanel {
     public boolean agregar(AristaView arista){
     	boolean valido=true;
     	for(AristaView av: aristas)
-    		if(arista.getOrigen().equals(av.getOrigen())&&arista.getDestino().equals(av.getDestino()))
+    		if(arista.getOrigen().getNombre().equals(av.getOrigen().getNombre())&&arista.getDestino().getNombre().equals(av.getDestino().getNombre()))
     		{
     			valido=false; 
     			JOptionPane.showMessageDialog(null,"La arista que desea crear ya existe");
+    			break;
     		}
     	
     	if(valido)
@@ -386,6 +388,13 @@ public class GrafoPanel extends JPanel {
 		}
 			else JOptionPane.showMessageDialog(null,"No hay caminos agregados aun");
 		else JOptionPane.showMessageDialog(null,"No hay vertices y/o caminos agregados aun para dicho tema");
+	}
+
+	public void resetGrafo() throws Exception{
+		this.aristas=new ArrayList<>();
+		this.vertices=new ArrayList<>();
+		try{MaterialConexion.resetGrafo();}catch(Exception ex) {throw ex;}
+		
 	}
 	
 }

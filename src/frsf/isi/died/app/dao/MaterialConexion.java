@@ -113,7 +113,6 @@ public static void agregarLibro(MaterialCapacitacion unLibro) throws Exception {
             sql.close();
 
             GRAFO_MATERIAL.addNodo(unLibro);	
-    //		biblioteca.agregar(unLibro);
         	
         } catch (SQLException ex) {
            throw new Exception("No se pudo agregar el Libro ");
@@ -196,7 +195,6 @@ public static void agregarVideo(MaterialCapacitacion unVideo) throws Exception {
         
         unVideo.setId(id_video);
         GRAFO_MATERIAL.addNodo(unVideo);	
-	//	biblioteca.agregar(unVideo);
 		
         sql.close();
     } catch (SQLException ex) {
@@ -302,6 +300,7 @@ public static void modificarLibro(Libro l) throws Exception{
 	                "UPDATE died.material "
 	                + "SET titulo='"+l.getTitulo()+"', costo='"+l.getCosto()+"', fecha_publicacion='"+fmt.format(l.getFecha_publicacion())
 	                +"', precio_compra='"+l.getPrecioCompra()+"', paginas='"+l.getPaginas()+"', calificacion='"+l.getCalificacion()
+	                +"', tema='"+l.getTema()
 	                +"' WHERE id_material='"+l.getId()+"'");
 	            sql.executeUpdate();
 	            
@@ -326,6 +325,7 @@ public static void modificarVideo(Video v) throws Exception{
                 "UPDATE died.material "
                 + "SET titulo='"+v.getTitulo()+"', costo='"+v.getCosto()+"', fecha_publicacion='"+fmt.format(v.getFecha_publicacion())
                 +"', duracion='"+v.getDuracionEnSegundos()+"', calificacion='"+v.getCalificacion()
+                +"', tema='"+v.getTema()
                 +"' WHERE id_material='"+v.getId()+"'");
             sql.executeUpdate();
             
@@ -401,6 +401,24 @@ List<VerticeView> vertices = new ArrayList<>();
   	} catch (SQLException ex) {throw new Exception("No se pudieron recuperar los vertices para mostrarlos");}
     
   return vertices;
+}
+
+public static void resetGrafo() throws Exception{
+	Connection con;
+	try {  
+            con=Conexion.estableceConexion();
+            PreparedStatement sql = con.prepareStatement(
+                "DELETE FROM died.arista");
+            sql.executeUpdate();
+            sql = con.prepareStatement(
+                    "DELETE FROM died.vertice");
+            sql.executeUpdate();
+            sql.close();
+            con.close();
+            
+            GRAFO_MATERIAL.resetear();
+            
+        } catch (SQLException ex) {throw new Exception("No se pudo resetear el Grafo");}
 }
 
 }

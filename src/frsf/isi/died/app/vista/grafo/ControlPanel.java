@@ -5,6 +5,7 @@
  */
 package frsf.isi.died.app.vista.grafo;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +30,7 @@ public class ControlPanel extends JPanel {
 	public int id_usuario;
     private JComboBox<String> cmbVertice1,cmbVertice2,cmbTemas; 
     private JTextField txtLongitudCamino; 
-    private JButton btnBuscarCamino; 
-    private JButton btnPageRank;
+    private JButton btnBuscarCamino, btnPageRank,btnReset;
     private GrafoController controller;
     private List<MaterialCapacitacion> listaVertices;
         
@@ -48,14 +48,14 @@ public class ControlPanel extends JPanel {
         
         this.txtLongitudCamino = new JTextField(5); 
         
-        this.btnBuscarCamino = new JButton("Buscar Camino");
+        this.btnBuscarCamino = crearBoton(new JButton("Buscar Camino"));
         this.btnBuscarCamino.addActionListener(
                 e -> { 
                 if(this.listaVertices.size()>1){
                 	Integer n=0;
                     if(!txtLongitudCamino.getText().isEmpty())
                 	{
-                    	n =Integer.parseInt(txtLongitudCamino.getText());
+                    	try{n =Integer.parseInt(txtLongitudCamino.getText());}catch(Exception ex) {JOptionPane.showMessageDialog(null,"Debe ingresar un numero de saltos entre 1 y "+(listaVertices.size()-1));}
                     	if(n<1||n>this.listaVertices.size()-1)
                     		if(listaVertices.size()==2)JOptionPane.showMessageDialog(null,"Solo puede ingresar 1 como numero de saltos");
                     		else JOptionPane.showMessageDialog(null,"Debe ingresar un numero de saltos entre 1 y "+(listaVertices.size()-1));
@@ -78,13 +78,29 @@ public class ControlPanel extends JPanel {
                 }
         );
         
-        this.btnPageRank = new JButton("Calcular PageRank");
+        this.btnPageRank = crearBoton(new JButton("Calcular PageRank"));
         this.btnPageRank.addActionListener(e -> {controller.calcularPageRank((String)cmbTemas.getSelectedItem());});
+        
+        this.btnReset=crearBoton(new JButton("Reset"));
+        this.btnReset.addActionListener(e -> {
+        	try{controller.resetGrafo();}catch(Exception ex) {JOptionPane.showMessageDialog(null,ex.getMessage());}});
         
         this.add(new JLabel("Vertice Origen"));this.add(cmbVertice1);this.add(new JLabel("Vertice Destino"));
     	this.add(cmbVertice2); this.add(new JLabel("Cantidad de saltos"));this.add(txtLongitudCamino);        
-    	this.add(btnBuscarCamino); this.add(btnPageRank); this.add(cmbTemas);
+    	this.add(btnBuscarCamino); this.add(btnPageRank); this.add(cmbTemas); this.add(btnReset);
     }
+    
+  //agrega el KeyListener al boton
+  	private JButton crearBoton(JButton boton) {
+  		 boton.addKeyListener(new java.awt.event.KeyListener() {
+  	         @Override
+  	         public void keyTyped(KeyEvent e) {}
+  	         @Override
+  	         public void keyPressed(KeyEvent e) {if(e.getKeyCode() == 10) boton.doClick();}
+  	         @Override
+  	         public void keyReleased(KeyEvent e) {}});  
+  		 return boton;
+  		}
 
     public GrafoController getController() {
         return controller;

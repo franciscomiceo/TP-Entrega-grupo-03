@@ -93,4 +93,10 @@ public class GrafoController {
 			vistaGrafo.calcularPageRank(tema);
 		}
 
+	public void resetGrafo() throws Exception{
+		try{vistaGrafo.resetGrafo();
+		this.vistaGrafo.repaint();}catch(Exception ex) {throw ex;}
+		
+	}
+
 }

@@ -230,7 +230,8 @@ public class Grafo<T> {
          
     }
     
-    //SE MODIFICO PARA QUE ENCUENTRE "TODOS" LOS CAMINOS
+    //CON SALTOS!!!
+    //SE MODIFICO PARA QUE ENCUENTRE "TODOS" LOS CAMINOS 
     private List<T> buscarCaminoNSaltos(Vertice<T> n1,Vertice<T> n2,Integer saltos,HashSet<Vertice<T>> visitados,GrafoPanel cp,boolean sinAdy){
         ArrayList<T> resultado = new ArrayList<>();
         int tam=0;
@@ -241,7 +242,11 @@ public class Grafo<T> {
             resultado.add(n2.getValor());
             if(sinAdy) 
             {
-            	JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado); //long camino=1 arista
+            	Double precioSuscripcionTotal=0.0;
+            	for(T mc: resultado)
+            		precioSuscripcionTotal+=((MaterialCapacitacion)mc).precio();
+            	
+            	JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado+"\n Precio Suscripcion Total: "+precioSuscripcionTotal); //long camino=1 arista
             	cp.caminoPintar((List<MaterialCapacitacion>)resultado);
                 cp.repaint(); 
             }
@@ -252,12 +257,16 @@ public class Grafo<T> {
                 adyacentes = getAdyacentes(n1);
                 visitados.add(n1);
                 for(Vertice<T> unAdy : adyacentes){
-                    List<T> resultado2 = buscarCaminoNSaltos(unAdy,n2, saltos-1,visitados,cp,false);
+                    List<T> resultado2 = buscarCaminoNSaltos(unAdy,n2, saltos-1,visitados,cp,false); //sinAdy=false
                     if(!resultado2.isEmpty()) {
                         resultado.add(n1.getValor());
                         resultado.addAll(resultado2);
                         
-                        JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado.subList(tam,resultado.size()));
+                        Double precioSuscripcionTotal=0.0;
+                    	for(T mc: resultado.subList(tam,resultado.size()))
+                    		precioSuscripcionTotal+=((MaterialCapacitacion)mc).precio();
+                    	
+                        JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado.subList(tam,resultado.size())+"\n Precio Suscripcion Total: "+precioSuscripcionTotal);
                         
                         cp.caminoPintar((List<MaterialCapacitacion>)resultado.subList(tam,resultado.size()));
                         cp.repaint(); 
@@ -282,6 +291,7 @@ public class Grafo<T> {
          
     }
     
+  //SIN SALTOS!!!
     private List<T> buscarCaminos(Vertice<T> n1,Vertice<T> n2,HashSet<Vertice<T>> visitados,GrafoPanel cp,boolean sinAdy){
         ArrayList<T> resultado = new ArrayList<>();
         int tam=0;
@@ -291,7 +301,11 @@ public class Grafo<T> {
             resultado.add(n2.getValor());
             if(sinAdy)
             { 
-            	JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado); //long camino=1 arista
+            	Double precioSuscripcionTotal=0.0;
+            	for(T mc: resultado)
+            		precioSuscripcionTotal+=((MaterialCapacitacion)mc).precio();
+            	
+            	JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado+"\n Precio Suscripcion Total: "+precioSuscripcionTotal); //long camino=1 arista
             	cp.caminoPintar((List<MaterialCapacitacion>)resultado);
                 cp.repaint();
             }
@@ -306,10 +320,13 @@ public class Grafo<T> {
                     if(!resultado2.isEmpty()) {
                         resultado.add(n1.getValor());
                         resultado.addAll(resultado2);
-                        System.out.println(resultado);
-                        JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado.subList(tam,resultado.size()));
+
+                        Double precioSuscripcionTotal=0.0;
+                    	for(T mc: resultado.subList(tam,resultado.size()))
+                    		precioSuscripcionTotal+=((MaterialCapacitacion)mc).precio();
                         
-                        //VER TODO
+                        JOptionPane.showMessageDialog(null,"Camino encontrado: "+resultado.subList(tam,resultado.size())+"\n Precio Suscripcion Total: "+precioSuscripcionTotal);
+                        
                         cp.caminoPintar((List<MaterialCapacitacion>)resultado.subList(tam,resultado.size()));
                         cp.repaint();
                         tam=resultado.size();      
@@ -324,6 +341,10 @@ public class Grafo<T> {
         }
         return resultado;
     }
+
+	public void resetear() {
+		this.aristas.clear();
+	}
 
 
 
